@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Create a basic Linux machine to run Graphite and StatSD",
+  "Description": "Graphite and StatSD",
   "Parameters": {
     "SecurityGroups": {
       "Type": "CommaDelimitedList",
@@ -26,9 +26,11 @@
         "m3.2xlarge",
         "m2.xlarge",
         "m2.2xlarge",
-        "m2.4xlarge"
+        "m2.4xlarge",
+        "c1.medium",
+        "c1.xlarge"
       ],
-      "Description": "t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge"
+      "Description": "t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge"
     },
     "Login": {
       "Type": "String",
