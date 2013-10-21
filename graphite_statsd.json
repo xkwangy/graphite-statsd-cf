@@ -111,7 +111,8 @@
                 "apt-get install -y git\n",
                 "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite\n",
                 "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd\n",
-                "/opt/setup-graphite/ubuntu.bash -l '",
+                "/opt/setup-graphite/ubuntu.bash",
+                " -l '",
                 {
                   "Ref": "Login"
                 },
