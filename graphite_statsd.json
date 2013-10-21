@@ -60,7 +60,7 @@
     "Password": {
       "Type": "String",
       "Default": "root",
-      "NoEcho": true,
+      "NoEcho": "true",
       "MinLength": "1",
       "Description": "Password for super-user"
     },
@@ -126,15 +126,26 @@
             "Fn::Join": [
               "",
               [
-                "#!/bin/bash",
-                "\n",
-                "sudo su -;",
-                "apt-get update;",
-                "apt-get install -y git;",
-                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite;",
-                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd;",
-                "/opt/setup-graphite/ubuntu.bash -l 'root' -p 'foo' -e 'root@domain.com';",
-                "/opt/setup-statsd/ubuntu.bash;"
+                "#!/bin/bash\n",
+                "sudo su -\n",
+                "apt-get update\n",
+                "apt-get install -y git\n",
+                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite\n",
+                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd\n",
+                "/opt/setup-graphite/ubuntu.bash -l '",
+                {
+                  "Ref": "Login"
+                },
+                "' -p '",
+                {
+                  "Ref": "Password"
+                },
+                "' -e '",
+                {
+                  "Ref": "Email"
+                },
+                "'\n",
+                "/opt/setup-statsd/ubuntu.bash\n"
               ]
             ]
           }
