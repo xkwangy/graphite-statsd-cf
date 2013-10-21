@@ -113,10 +113,31 @@
           "Fn::FindInMap": [
             "RegionMap",
             {
-              "Ref": "AWS::Region"
+              "Ref": "Region"
             },
             "AMI"
           ]
+        },
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash",
+                "\n",
+                "sudo su -;",
+                "apt-get update;",
+                "apt-get install -y git;",
+                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite;",
+                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd;",
+                "/opt/setup-graphite/ubuntu.bash -l 'root' -p 'foo' -e 'root@domain.com';",
+                "/opt/setup-statsd/ubuntu.bash;"
+              ]
+            ]
+          }
         }
       }
     }
