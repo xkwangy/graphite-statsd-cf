@@ -9,7 +9,7 @@
     },
     "KeyName": {
       "Type": "String",
-      "Default": "namnguye",
+      "Default": "stormcloud-admin",
       "MinLength": "1",
       "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance"
     },
