@@ -2,12 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Create a basic Linux machine to run Graphite and StatSD",
   "Parameters": {
-    "TagKeyName": {
-      "Type": "String",
-      "Default": "graphite",
-      "MinLength": "1",
-      "Description": "Tag instance with key name"
-    },
     "SecurityGroups": {
       "Type": "CommaDelimitedList",
       "Default": "stormcloud, stormcloud-monitor",
@@ -36,21 +30,6 @@
       ],
       "Description": "t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge"
     },
-    "Region": {
-      "Type": "String",
-      "Default": "us-east-1",
-      "AllowedValues": [
-        "us-east-1",
-        "us-west-1",
-        "us-west-2",
-        "eu-west-1",
-        "ap-southeast-1",
-        "ap-southeast-2",
-        "ap-northeast-1",
-        "sa-east-1"
-      ],
-      "Description": "us-east-1, us-west-1, us-west-2, eu-west-1, ap-southeast-1, ap-southeast-2, ap-northeast-1, sa-east-1"
-    },
     "Login": {
       "Type": "String",
       "Default": "root",
@@ -66,7 +45,7 @@
     },
     "Email": {
       "Type": "String",
-      "Default": "root@localhost",
+      "Default": "root@localhost.com",
       "MinLength": "1",
       "Description": "Email for super-user"
     }
@@ -113,7 +92,7 @@
           "Fn::FindInMap": [
             "RegionMap",
             {
-              "Ref": "Region"
+              "Ref": "AWS::Region"
             },
             "AMI"
           ]
@@ -153,5 +132,23 @@
       }
     }
   },
-  "Outputs": {}
+  "Outputs": {
+    "WebsiteURL": {
+      "Description": "The URL for the newly created Graphite application",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "http://",
+            {
+              "Fn::GetAtt": [
+                "Ec2Instance",
+                "PublicIp"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  }
 }
