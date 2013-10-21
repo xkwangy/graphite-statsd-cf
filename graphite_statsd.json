@@ -2,6 +2,23 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Create a basic Linux machine to run Graphite and StatSD",
   "Parameters": {
+    "TagKeyName": {
+      "Type": "String",
+      "Default": "graphite",
+      "MinLength": "1",
+      "Description": "Tag instance with key name"
+    },
+    "SecurityGroups": {
+      "Type": "CommaDelimitedList",
+      "Default": "stormcloud, stormcloud-monitor",
+      "Description": "Security group names separated by commas"
+    },
+    "KeyName": {
+      "Type": "String",
+      "Default": "namnguye",
+      "MinLength": "1",
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance"
+    },
     "InstanceType": {
       "Type": "String",
       "Default": "m1.xlarge",
@@ -37,17 +54,20 @@
     "Login": {
       "Type": "String",
       "Default": "root",
+      "MinLength": "1",
       "Description": "Login for super-user"
     },
     "Password": {
       "Type": "String",
       "Default": "root",
       "NoEcho": true,
+      "MinLength": "1",
       "Description": "Password for super-user"
     },
     "Email": {
       "Type": "String",
       "Default": "root@localhost",
+      "MinLength": "1",
       "Description": "Email for super-user"
     }
   },
@@ -80,12 +100,24 @@
     }
   },
   "Resources": {
-    "GraphiteServer": {
+    "Ec2Instance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
-        "ImageId": "ami-a73264ce",
-        "InstanceType": "m1.xlarge",
-        "AvailabilityZone": "us-east-1a"
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "SecurityGroups": {
+          "Ref": "SecurityGroups"
+        },
+        "ImageId": {
+          "Fn::FindInMap": [
+            "RegionMap",
+            {
+              "Ref": "AWS::Region"
+            },
+            "AMI"
+          ]
+        }
       }
     }
   },
