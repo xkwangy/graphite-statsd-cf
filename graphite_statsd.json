@@ -1,157 +1,157 @@
 {
-  "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Graphite and StatSD",
-  "Parameters": {
-    "SecurityGroups": {
-      "Type": "CommaDelimitedList",
-      "Default": "stormcloud, stormcloud-monitor",
-      "Description": "Security group names separated by commas"
-    },
-    "KeyName": {
-      "Type": "String",
-      "Default": "stormcloud-admin",
-      "MinLength": "1",
-      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance"
-    },
-    "InstanceType": {
-      "Type": "String",
-      "Default": "m1.xlarge",
-      "AllowedValues": [
-        "t1.micro",
-        "m1.small",
-        "m1.medium",
-        "m1.large",
-        "m1.xlarge",
-        "m3.xlarge",
-        "m3.2xlarge",
-        "m2.xlarge",
-        "m2.2xlarge",
-        "m2.4xlarge",
-        "c1.medium",
-        "c1.xlarge"
-      ],
-      "Description": "t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge"
-    },
-    "Login": {
-      "Type": "String",
-      "Default": "root",
-      "MinLength": "1",
-      "Description": "Login for super-user"
-    },
-    "Password": {
-      "Type": "String",
-      "Default": "root",
-      "NoEcho": "true",
-      "MinLength": "1",
-      "Description": "Password for super-user"
-    },
-    "Email": {
-      "Type": "String",
-      "Default": "root@localhost.com",
-      "MinLength": "1",
-      "Description": "Email for super-user"
-    }
-  },
-  "Mappings": {
-    "RegionMap": {
-      "us-east-1": {
-        "AMI": "ami-a73264ce"
-      },
-      "us-west-1": {
-        "AMI": "ami-acf9cde9"
-      },
-      "us-west-2": {
-        "AMI": "ami-6aad335a"
-      },
-      "eu-west-1": {
-        "AMI": "ami-8e987ef9"
-      },
-      "ap-southeast-1": {
-        "AMI": "ami-b84e04ea"
-      },
-      "ap-southeast-2": {
-        "AMI": "ami-3d128f07"
-      },
-      "ap-northeast-1": {
-        "AMI": "ami-3f32ac3e"
-      },
-      "sa-east-1": {
-        "AMI": "ami-35258228"
-      }
-    }
-  },
-  "Resources": {
-    "Ec2Instance": {
-      "Type": "AWS::EC2::Instance",
-      "Properties": {
-        "KeyName": {
-          "Ref": "KeyName"
-        },
-        "SecurityGroups": {
-          "Ref": "SecurityGroups"
-        },
-        "ImageId": {
-          "Fn::FindInMap": [
-            "RegionMap",
-            {
-              "Ref": "AWS::Region"
-            },
-            "AMI"
-          ]
-        },
-        "InstanceType": {
-          "Ref": "InstanceType"
-        },
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "",
-              [
-                "#!/bin/bash\n",
-                "sudo su -\n",
-                "apt-get update\n",
-                "apt-get install -y git\n",
-                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite\n",
-                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd\n",
-                "/opt/setup-graphite/ubuntu.bash",
-                " -l '",
-                {
-                  "Ref": "Login"
-                },
-                "' -p '",
-                {
-                  "Ref": "Password"
-                },
-                "' -e '",
-                {
-                  "Ref": "Email"
-                },
-                "'\n",
-                "/opt/setup-statsd/ubuntu.bash\n"
-              ]
-            ]
-          }
-        }
-      }
-    }
-  },
-  "Outputs": {
-    "WebsiteURL": {
-      "Description": "The URL for the newly created Graphite application",
-      "Value": {
-        "Fn::Join": [
-          "",
-          [
-            "http://",
-            {
-              "Fn::GetAtt": [
-                "Ec2Instance",
-                "PublicIp"
-              ]
-            }
-          ]
-        ]
-      }
-    }
-  }
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Graphite and StatSD",
+  "Parameters": {
+    "SecurityGroups": {
+      "Type": "CommaDelimitedList",
+      "Default": "stormcloud, stormcloud-monitor",
+      "Description": "Security group names separated by commas"
+    },
+    "KeyName": {
+      "Type": "String",
+      "Default": "stormcloud-admin",
+      "MinLength": "1",
+      "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance"
+    },
+    "InstanceType": {
+      "Type": "String",
+      "Default": "m1.xlarge",
+      "AllowedValues": [
+        "t1.micro",
+        "m1.small",
+        "m1.medium",
+        "m1.large",
+        "m1.xlarge",
+        "m3.xlarge",
+        "m3.2xlarge",
+        "m2.xlarge",
+        "m2.2xlarge",
+        "m2.4xlarge",
+        "c1.medium",
+        "c1.xlarge"
+      ],
+      "Description": "t1.micro, m1.small, m1.medium, m1.large, m1.xlarge, m3.xlarge, m3.2xlarge, m2.xlarge, m2.2xlarge, m2.4xlarge, c1.medium, c1.xlarge"
+    },
+    "Login": {
+      "Type": "String",
+      "Default": "root",
+      "MinLength": "1",
+      "Description": "Login for Graphite Browser's admin user"
+    },
+    "Password": {
+      "Type": "String",
+      "Default": "root",
+      "NoEcho": "true",
+      "MinLength": "1",
+      "Description": "Password for Graphite Browser's admin user"
+    },
+    "Email": {
+      "Type": "String",
+      "Default": "root@localhost.com",
+      "MinLength": "1",
+      "Description": "Email for super-user"
+    }
+  },
+  "Mappings": {
+    "RegionMap": {
+      "us-east-1": {
+        "AMI": "ami-a73264ce"
+      },
+      "us-west-1": {
+        "AMI": "ami-acf9cde9"
+      },
+      "us-west-2": {
+        "AMI": "ami-6aad335a"
+      },
+      "eu-west-1": {
+        "AMI": "ami-8e987ef9"
+      },
+      "ap-southeast-1": {
+        "AMI": "ami-b84e04ea"
+      },
+      "ap-southeast-2": {
+        "AMI": "ami-3d128f07"
+      },
+      "ap-northeast-1": {
+        "AMI": "ami-3f32ac3e"
+      },
+      "sa-east-1": {
+        "AMI": "ami-35258228"
+      }
+    }
+  },
+  "Resources": {
+    "Ec2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "KeyName": {
+          "Ref": "KeyName"
+        },
+        "SecurityGroups": {
+          "Ref": "SecurityGroups"
+        },
+        "ImageId": {
+          "Fn::FindInMap": [
+            "RegionMap",
+            {
+              "Ref": "AWS::Region"
+            },
+            "AMI"
+          ]
+        },
+        "InstanceType": {
+          "Ref": "InstanceType"
+        },
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "sudo su -\n",
+                "apt-get update\n",
+                "apt-get install -y git\n",
+                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite\n",
+                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd\n",
+                "/opt/setup-graphite/ubuntu.bash",
+                " -l '",
+                {
+                  "Ref": "Login"
+                },
+                "' -p '",
+                {
+                  "Ref": "Password"
+                },
+                "' -e '",
+                {
+                  "Ref": "Email"
+                },
+                "'\n",
+                "/opt/setup-statsd/ubuntu.bash\n"
+              ]
+            ]
+          }
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "WebsiteURL": {
+      "Description": "The URL for the newly created Graphite application",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "http://",
+            {
+              "Fn::GetAtt": [
+                "Ec2Instance",
+                "PublicIp"
+              ]
+            }
+          ]
+        ]
+      }
+    }
+  }
 }
