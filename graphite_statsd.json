@@ -111,8 +111,8 @@
                 "sudo su -\n",
                 "apt-get update\n",
                 "apt-get install -y git\n",
-                "git clone https://github.com/gdbtek/setup-graphite.git /opt/setup-graphite\n",
-                "git clone https://github.com/gdbtek/setup-statsd.git /opt/setup-statsd\n",
+                "git clone https://github.com/mapbox/setup-graphite.git /opt/setup-graphite\n",
+                "git clone https://github.com/mapbox/setup-statsd.git /opt/setup-statsd\n",
                 "/opt/setup-graphite/ubuntu.bash",
                 " -l '",
                 {
