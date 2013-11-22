@@ -4,7 +4,7 @@
   "Parameters": {
     "SecurityGroups": {
       "Type": "CommaDelimitedList",
-      "Default": "stormcloud, stormcloud-monitor",
+      "Default": "statsd-graphite",
       "Description": "Security group names separated by commas"
     },
     "KeyName": {
